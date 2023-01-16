@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+<h1>The button Element</h1>
+
+<button type="button" onclick=addUser()>Add User</button>
+ 
+<button type="button" onclick=addAnimal()>Add Animal</button>
+
+<button type="button" onclick=addTrainingLog()>Add Training Log</button>
+
+<button type="button" onclick=getUsers()>Get Users</button>
+
+<button type="button" onclick=getAnimals()>Get Animals</button>
+
+<button type="button" onclick=getTrainingLogs()>Get Training Logs</button>
+
+<button type="button" onclick=login()>Login</button>
+
+<script> 
+function addUser() {
+
+  var firstName = 'Test';
+  var lastName = 'Test';
+  var email = 'test@gmail.com';
+  var password = 'x903y03ccv';
+  var profilePicture = 'testImagePath';
+
+ const data = {
+  firstName,
+  lastName,
+  email,
+  password,
+  profilePicture
+   };
+
+   const profileData = {
+     method: 'POST',
+     body: JSON.stringify(data),
+     headers: {
+       'Content-Type': 'text/plain',
+     },
+  
+   };
+
+     console.log('Called');
+    fetch('http://localhost:3000/api/user', profileData)
+    .then((response) => response.json())
+      .then((data) => {
+        console.log('Status: ' + "New User Saved");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+function addAnimal() {
+    var name = 'Charlie';
+ var hoursTrained = 7;
+ var password = 'password';
+ var profilePicture = 'testImagePath';
+
+const animalData = {
+ name,
+ hoursTrained,
+ password,
+ profilePicture
+  };
+
+  const animalD = {
+    method: 'POST',
+    body: JSON.stringify(animalData),
+    headers: {
+      'Content-Type': 'text/plain',
+      'Authorization': `${getCookieValue('jwtToken')}`
+    },
+  
+  };
+    console.log('Called');
+     fetch('http://localhost:3000/api/animal', animalD)
+     .then((response) => response.json())
+     .then((data) => {
+       console.log('Status: ' + "New Animal Saved");
+     })
+     .catch((error) => {
+       console.error(error);
+     });
+}
+
+function addTrainingLog() {
+var date = '1/15/23';
+ var description = 'Sitting';
+ var hours = 8;
+ var animal = '63c4d514e520c20d1636d1ca';
+ var user = '63c48ca27ae4bfd7ae98cf75';
+ var trainingLogVideo = 'testImagePath';
+
+const trainingData = {
+ date,
+ description,
+ hours,
+ animal,
+ user,
+ trainingLogVideo
+  };
+
+  const video = {
+    method: 'POST',
+    body: JSON.stringify(trainingData),
+    headers: {
+      'Content-Type': 'text/plain',
+      'Authorization': `${getCookieValue('jwtToken')}`
+    },
+  
+  };
+  fetch('http://localhost:3000/api/training', video)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function getUsers() {
+    console.log(getCookieValue('jwtToken'));
+    //console.log(token);
+    fetch('http://localhost:3000/api/admin/users', {
+  method: 'GET',
+  headers: {
+    'Authorization': `${getCookieValue('jwtToken')}`
+  }
+})
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Status: ' + "Users Retrieved");
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function getAnimals() {
+    fetch('http://localhost:3000/api/admin/animals', {
+  method: 'GET',
+  headers: {
+    'Authorization': `${getCookieValue('jwtToken')}`
+  }
+})
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Status: ' + "Animals Retrieved");
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function getTrainingLogs() {
+    fetch('http://localhost:3000/api/admin/training',  {
+  method: 'GET',
+  headers: {
+    'Authorization': `${getCookieValue('jwtToken')}`
+  }
+})
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Status: ' + "Training Logs Retrieved");
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+const userData = {
+ username: 'test@gmail.com',
+ password: 'x903y03ccv'
+  };
+
+  const userCred = {
+    method: 'POST',
+    body: JSON.stringify(userData),
+    headers: {
+      'Content-Type': 'text/plain',
+    },
+}
+function login() {
+    fetch('http://localhost:3000/api/user/verify', userCred)
+    .then((response) => response.json())
+    .then((data) => {
+      //const payload = jwt.decode(data.token);
+      //console.log(payload.email);
+      console.log("Login Attempted");
+      //token = data.token;
+      document.cookie = 'jwtToken=' + data.token + ';path=/;';
+      console.log(getCookieValue('jwtToken'));
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+function getCookieValue(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+ </script>
+</body>
+</html>
