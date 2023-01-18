@@ -233,12 +233,7 @@ app.post('/api/training', authenticate, (req, res) => {
       });
       var animalCheck;
       async function checkAnimal() {
-        //const animalCheck = await Animal.findOne({ _id: animal });
-        //console.log(animalCheck);
-        //console.log(animalCheck.owner.toHexString() == user);
-        //console.log(await Animal.findOne({ _id: animal }));
         animalCheck = await Animal.findOne({ _id: animal });
-       // console.log(animalCheck);
       }
       checkAnimal();
         
@@ -274,7 +269,7 @@ app.post('/api/training', authenticate, (req, res) => {
                   });
               }
         }, 3000);
-     // }
+     
 
 
     
@@ -282,10 +277,7 @@ app.post('/api/training', authenticate, (req, res) => {
 
 app.get('/api/admin/users', authenticate, async (req, res) => {
         
-    //console.log(req);
-    //console.log(req.body);
-    // client.connect();
-    //const userID  = '35d0548f-f91c-49b0-8235-0bf24053552c';
+
     const count = await User.countDocuments();
     const limit = 10;
     const totalPages = Math.ceil(count / limit);
@@ -302,10 +294,7 @@ app.get('/api/admin/users', authenticate, async (req, res) => {
 
  app.get('/api/admin/animals', authenticate, async (req, res) => {
         
-    //console.log(req);
-    //console.log(req.body);
-    // client.connect();
-    //const userID  = '35d0548f-f91c-49b0-8235-0bf24053552c';
+
     const count = await Animal.countDocuments();
     const limit = 10;
     const totalPages = Math.ceil(count / limit);
@@ -322,10 +311,7 @@ app.get('/api/admin/users', authenticate, async (req, res) => {
 
  app.get('/api/admin/training', authenticate, async (req, res) => {
         
-    //console.log(req);
-    //console.log(req.body);
-    // client.connect();
-    //const userID  = '35d0548f-f91c-49b0-8235-0bf24053552c';
+
     const count = await TrainingLog.countDocuments();
     const limit = 10;
     const totalPages = Math.ceil(count / limit);
@@ -346,7 +332,7 @@ app.get('/api/admin/users', authenticate, async (req, res) => {
 
     if (userCheck != null) {
         const match = await bcrypt.compare(password, userCheck.password)
-        //console.log(match);
+        
         if (match == true) {
             res.json("Status 200 (Success)");
             console.log("Status 200 (Success)");
@@ -372,7 +358,6 @@ app.get('/api/admin/users', authenticate, async (req, res) => {
     
         if (userCheck != null) {
             const match = await bcrypt.compare(password, userCheck.password)
-            //console.log(match);
             if (match == true) {
                 const exp = Math.floor(Date.now() / 1000) + (60 * 60);
                 const payload = {
@@ -389,7 +374,6 @@ app.get('/api/admin/users', authenticate, async (req, res) => {
                 await userCheck.save();
                 res.json({token});
                 console.log("Status 200 (Success)");
-                //console.log((jwt.verify(token, SECRET_KEY)).payload.exp);
             }
             else {
                 console.log("Status 403: Inc");
